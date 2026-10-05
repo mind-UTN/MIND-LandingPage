@@ -16,9 +16,11 @@ Después abrí `http://localhost:4321`. Abrir el archivo con doble clic también
 
 Se sube `index.html` tal cual, sin build:
 
+- **GitHub Pages (configurado):** `.github/workflows/deploy.yml` publica en cada push a `main`, y también se puede
+  lanzar a mano desde la pestaña Actions. La única configuración necesaria es Settings → Pages → Source: "GitHub
+  Actions". Queda en `https://mind-utn.github.io/MIND-LandingPage/`.
 - **Netlify:** arrastrar la carpeta a app.netlify.com/drop, o conectar el repo con "publish directory" en la raíz.
 - **Vercel / Cloudflare Pages:** proyecto estático, sin comando de build, directorio de salida `.`.
-- **GitHub Pages:** Settings → Pages → rama `main`, carpeta `/ (root)`.
 
 ## Qué incluye
 

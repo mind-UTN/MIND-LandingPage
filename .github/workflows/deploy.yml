@@ -1,0 +1,45 @@
+# Publica la landing en GitHub Pages en cada push a main (o a mano desde la
+# pestaña Actions). No hay build: se sube la raíz del repo tal cual.
+#
+# Requisito único: Settings → Pages → Build and deployment → Source: "GitHub Actions".
+name: Deploy a GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Permisos mínimos que pide actions/deploy-pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Un solo despliegue a la vez; si entra otro push, el que está en curso termina.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      # Solo lo que se sirve: el index.html (el README queda en el repo).
+      - name: Preparar sitio
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
